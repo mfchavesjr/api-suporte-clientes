@@ -19,6 +19,11 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
+    public Cliente findById(Integer id) {
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Cliente não encontrado"));
+    }
+
     public Cliente save(DTOCliente dtoCliente) {
         return clienteRepository.save(Cliente.builder()
                 .nome(dtoCliente.getNome())
@@ -26,8 +31,14 @@ public class ClienteService {
                 .build());
     }
 
-    public Cliente findById(Integer id) {
-        return clienteRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Cliente não encontrado"));
+    public Cliente replace(DTOCliente dtoCliente, Integer id) {
+        Cliente clienteSaved = findById(id);
+        Cliente cliente = Cliente.builder()
+                .id(clienteSaved.getId())
+                .nome(dtoCliente.getNome())
+                .cpf(dtoCliente.getCpf())
+                .dataCadastro(clienteSaved.getDataCadastro())
+                .build();
+        return clienteRepository.save(cliente);
     }
 }

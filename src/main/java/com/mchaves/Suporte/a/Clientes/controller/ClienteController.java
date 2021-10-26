@@ -24,13 +24,18 @@ public class ClienteController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Cliente> findById(@PathVariable Integer id){
+    public ResponseEntity<Cliente> findById(@PathVariable Integer id) {
         return ResponseEntity.ok(clienteService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> save(@RequestBody @Valid DTOCliente dtoCliente){
+    public ResponseEntity<Cliente> save(@RequestBody @Valid DTOCliente dtoCliente) {
         return new ResponseEntity<>(clienteService.save(dtoCliente), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cliente> replace(@RequestBody DTOCliente dtoCliente, @PathVariable Integer id) {
+        return ResponseEntity.ok(clienteService.replace(dtoCliente, id));
     }
 
 
